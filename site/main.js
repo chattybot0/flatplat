@@ -48,7 +48,7 @@ class Platformer {
   jump() {
     socket.emit("time");
     var jump = setInterval(function () {
-      $("#player").css({ "top": "-=0.1px" });
+      $("#player").css({ "top": "-=0.2px" });
     });
 
     setTimeout(function () { clearInterval(jump) }, 200);
@@ -56,7 +56,7 @@ class Platformer {
 	lump() {
     socket.emit("time");
     var lump = setInterval(function () {
-      $("#player").css({ "top": "+=0.1px" });
+      $("#player").css({ "top": "+=0.2px" });
     });
 
     setTimeout(function () { clearInterval(lump) }, 200);

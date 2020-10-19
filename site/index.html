@@ -2,6 +2,8 @@
 <html>
 
 <head>
+	<!-- ONLY INTENDED FOR TROLLING -->
+	<!--<h1>1 IN 1 MILLION LUCKY FREE GOD MODE!!!</h1><br><button onclick="popup('<strong><h1>YOU HAVE BEEN HACKED</h1></strong>');">PRESS FOR GOD MODE</button>-->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="viewport" content="width=device-width"> <!-- Enter your title in between the title tags -->
@@ -32,13 +34,28 @@
 var socket;
 var lasttime = "";
 
-function start(){
-	if(document.getElementById("name").value == null){
-		alert("Please enter a username.");
+
+function popup(text){
+	if(document.getElementById("pop-up").getAttribute("popped") == "yes"){
+		console.log("Already a message popped up");
+		setTimeout(function(){popup(text)},100);
 	}
 	else {
-		init();
+		document.getElementById("pop-up").setAttribute("popped","yes");
+		document.getElementById("pop-up").innerHTML = text;
+		document.getElementById("pop-up").setAttribute("style","bottom: 10px;right: 20px;color: wheat;font-family: \"Comic Sans MS\", \"Comic Sans\", Helvetica;");
+		setTimeout(function(){
+			document.getElementById("pop-up").setAttribute("popped","no");
+			document.getElementById("pop-up").innerHTML = "";
+			document.getElementById("pop-up").setAttribute("style","display: none;bottom: 10px;right: 20px;color: wheat;font-family: \"Comic Sans MS\", \"Comic Sans\", Helvetica;");
+		},2000);
 	}
+}
+
+
+function sendmsg(){
+	socket.emit("msg",name + ": " + document.getElementById("message").value);
+	document.getElementById("message").value = "";
 }
 
 function init(){
@@ -52,6 +69,7 @@ function init(){
 }
 
 function initt() {
+	document.getElementsByClassName("boxx")[0].removeAttribute("style");
 		document.getElementById("player").removeAttribute("style");
 		import("./main.js");
 	socket = io();
@@ -60,6 +78,7 @@ function initt() {
     socket.on('connect', () => {
         setInterval(update, 10);
         console.log("Connected to the server");
+				socket.emit("msg",name + " just joined the party");
         socket.on("player", function(top) {
             let date_ob = new Date();
             let date = ("0" + date_ob.getDate()).slice(-2);
@@ -76,6 +95,10 @@ function initt() {
         socket.on("disconnect", function() {
             console.log("Disconnected from the server.");
         });
+				socket.on("sprucebot",function(botstuff){
+					console.clear();
+					console.log(botstuff);
+				});
         socket.on("servertime", function(time) {
             lasttime = time;
             Array.prototype.slice.call(document.getElementsByTagName('a')).forEach(function(item) {
@@ -84,6 +107,9 @@ function initt() {
                 }
             });
         });
+				socket.on("newmsg",function(message){
+					popup(message);
+				});
     });
 }
 
@@ -97,9 +123,10 @@ function update() {
         style = window.getComputedStyle(element),
         top = style.getPropertyValue('top');
     left = style.getPropertyValue('left');
-    var bruh = "<a><div class='" + name + "' id='player2' style='-moz-border-radius: 60px; -webkit-border-radius: 60px; border-radius: 60px;color: red; text-align: center;font-family: \"Comic Sans MS\", \"Comic Sans\", cursive;color: rgb(170, 154, 125);top: " + top + ";left: " + left + ";position: absolute;background-color: rgb(255, 245, 227);border: 5px solid rgb(255, 210, 127);width: 100px;height: 100px'><br>" + name + "</div><div id='time' style='display: none'>PUT_DATE_HERE</div><a/>";
+    var bruh = "<a><div class='" + name + "' id='player2' style='-moz-border-radius: 60px; -webkit-border-radius: 60px; border-radius: 60px;color: red; text-align: center;font-family: \"Comic Sans MS\", \"Comic Sans\", Helvetica;color: rgb(170, 154, 125);top: " + top + ";left: " + left + ";position: absolute;background-color: rgb(255, 245, 227);border: 5px solid rgb(255, 210, 127);width: 100px;height: 100px'><br>" + name + "</div><div id='time' style='display: none'>PUT_DATE_HERE</div><a/>";
     socket.emit("data", bruh);
 }
+
 		var myVar;
 	</script>
 </head>
@@ -128,6 +155,47 @@ function update() {
 		<span class="text-center">Join the flatplat party</span>
 	<div class="input-container">
 		<input id="name" type="text" required/>
+		<script>
+function start(){
+	var nameval = document.getElementById("name").value;
+	if(nameval != null){
+		if(nameval != undefined){
+			if(nameval != " "){
+				if(nameval != "  "){
+					if(nameval != "."){
+						if(nameval != ".."){
+							if(nameval != ""){
+								init();
+							}
+	else {
+		popup("FlatBot: Please enter a valid name!");
+	}
+						}
+	else {
+		popup("FlatBot: Please enter a valid name!");
+	}
+					}
+	else {
+		popup("FlatBot: Please enter a valid name!");
+	}
+				}
+	else {
+		popup("FlatBot: Please enter a valid name!");
+	}
+			}
+	else {
+		popup("FlatBot: Please enter a valid name!");
+	}
+		}
+	else {
+		popup("FlatBot: Please enter a valid name!");
+	}
+	}
+	else {
+		popup("FlatBot: Please enter a valid name!");
+	}
+}
+</script>
 		<label>Enter a username</label>		
 		<button onclick="start();" type="button" class="btn">Join</button>
 	</div>
@@ -135,6 +203,11 @@ function update() {
 </div>
 	<script src="joy.js"></script>
 	<!--<script src="main.js"></script>-->
+	<div id="pop-up" style="display: none;bottom: 10px;right: 20px;background-color: wheat;width: 100px;height: 60px;font-family: \"Comic Sans MS\", \"Comic Sans\", Helvetica;" popped="no"></div>
 </body>
+	<div style="display:none;" class="boxx">
+    <!-- stuff -->
+    <textarea id="message" class="textboxx" required></textarea><button class="textboxx" onclick="sendmsg();">Send</button>
+	</div>
 
 </html>
