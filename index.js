@@ -55,7 +55,7 @@ setInterval(main, 10);
 function main() {
 	joins += Math.random();
 	console.clear();
-	console.log("top: " + top + " | left: " + left + " | fails: " + fails + " | joins: " + joins);
+	//console.log("top: " + top + " | left: " + left + " | fails: " + fails + " | joins: " + joins);
 	if(fails == 0){
 		if (joins > 600) {
 			bot();
